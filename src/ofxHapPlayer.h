@@ -49,8 +49,11 @@ public:
     // TODO: allow these
     ofxHapPlayer(ofxHapPlayer const &) = delete;
     ofxHapPlayer& operator=(ofxHapPlayer const &x) = delete;
-
-    virtual bool                load(std::string name) override;
+#if OF_VERSION_MINOR > 12
+	virtual bool                load(const of::filesystem::path & fileName) override;
+#else
+	virtual bool                load(std::string name) override;
+#endif
     virtual void                close() override;
     virtual void                update() override {};
     
@@ -77,7 +80,7 @@ public:
     Returns OF_PIXELS_RGBA, OF_PIXELS_RGB or OF_PIXELS_UNKNOWN
     */
     virtual ofPixelFormat       getPixelFormat() const override;
-    virtual string              getMoviePath() const;
+    virtual of::filesystem::path              getMoviePath() const;
     virtual bool				getHapAvailable() const; // TODO: delete (and mvar)?
 	
     virtual float               getPosition() const override;
@@ -166,7 +169,7 @@ private:
     ofTexture           _texture;
     bool                _playing;
     bool                _wantsUpload;
-	string              _moviePath;
+	of::filesystem::path _moviePath;
     ofxHap::TimeRangeSet _active;
     ofxHap::LockingPacketCache              _videoPackets;
     std::shared_ptr<ofxHap::Demuxer>        _demuxer;

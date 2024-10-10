@@ -46,7 +46,10 @@ extern "C" {
 #include <ppl.h>
 #elif defined(TARGET_LINUX)
 #include <dispatch/dispatch.h>
+#elif defined(TARGET_OSX)
+#import <Cocoa/Cocoa.h>
 #endif
+
 
 // This amount will be bufferred before and after the playhead
 #define kofxHapPlayerBufferUSec INT64_C(250000)
@@ -157,8 +160,15 @@ ofxHapPlayer::~ofxHapPlayer()
     ofRemoveListener(ofEvents().update, this, &ofxHapPlayer::update);
 }
 
+#if OF_VERSION_MINOR > 12
+bool ofxHapPlayer::load(const of::filesystem::path & fileName)
+{
+    _moviePath = fileName;
+    string name = ofPathToString(fileName);
+#else
 bool ofxHapPlayer::load(string name)
 {
+#endif 
 	_moviePath = name;
 	
     /*
@@ -605,7 +615,7 @@ ofShader *ofxHapPlayer::getShader()
     return nullptr;
 }
 
-string ofxHapPlayer::getMoviePath() const {
+of::filesystem::path ofxHapPlayer::getMoviePath() const {
 	return _moviePath;
 }
 
