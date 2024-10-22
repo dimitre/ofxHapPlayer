@@ -49,7 +49,7 @@ public:
     // TODO: allow these
     ofxHapPlayer(ofxHapPlayer const &) = delete;
     ofxHapPlayer& operator=(ofxHapPlayer const &x) = delete;
-#if OF_VERSION_MINOR > 12
+#if OF_VERSION_MINOR > 11
 	virtual bool                load(const of::filesystem::path & fileName) override;
 #else
 	virtual bool                load(std::string name) override;
